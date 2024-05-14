@@ -2,8 +2,11 @@ package org.springframework.beans.factory;
 
 import org.springframework.beans.factory.annotation.Configuration;
 import org.springframework.beans.factory.annotation.SpringTest;
+import org.springframework.beans.factory.annotation.TestConfiguration;
+import org.springframework.beans.factory.annotation.TestConfigurationFileException;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.exceptions.ConfigurationsException;
+import org.springframework.exceptions.SpringTestFileException;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -20,10 +23,24 @@ public class FileScanner {
         return componentFiles;
     }
 
-    public static ArrayList<Class<?>> getSpringTestFiles(String basePackage) throws URISyntaxException, ClassNotFoundException {
+    public static Class<?> getSpringTestFile(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestFileException {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, SpringTest.class);
-        return componentFiles;
+
+        if (componentFiles.size() != 1)
+            throw new SpringTestFileException();
+
+        return componentFiles.get(0);
+    }
+
+    public static Class<?> getTestConfiguration(String basePackage) throws URISyntaxException, ClassNotFoundException, TestConfigurationFileException {
+        ArrayList<Class<?>> componentFiles = new ArrayList<>();
+        instantiate(componentFiles, basePackage, TestConfiguration.class);
+
+        if (componentFiles.size() != 1)
+            throw new TestConfigurationFileException();
+
+        return componentFiles.get(0);
     }
 
     private static void instantiate(List<Class<?>> componentFiles, String rootDirectoryName, Class<? extends Annotation> annotationClass) throws URISyntaxException, ClassNotFoundException {
