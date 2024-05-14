@@ -1,6 +1,7 @@
 package org.springframework.beans.factory;
 
 import org.springframework.beans.factory.annotation.Configuration;
+import org.springframework.beans.factory.annotation.SpringTest;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.exceptions.ConfigurationsException;
 
@@ -15,16 +16,22 @@ import java.util.Objects;
 public class FileScanner {
     public static ArrayList<Class<?>> getComponentFiles(String basePackage) throws URISyntaxException, ClassNotFoundException {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
-        instantiate(componentFiles, basePackage);
+        instantiate(componentFiles, basePackage, Component.class);
         return componentFiles;
     }
 
-    private static void instantiate(List<Class<?>> componentFiles, String rootDirectoryName) throws URISyntaxException, ClassNotFoundException {
+    public static ArrayList<Class<?>> getSpringTestFiles(String basePackage) throws URISyntaxException, ClassNotFoundException {
+        ArrayList<Class<?>> componentFiles = new ArrayList<>();
+        instantiate(componentFiles, basePackage, SpringTest.class);
+        return componentFiles;
+    }
+
+    private static void instantiate(List<Class<?>> componentFiles, String rootDirectoryName, Class<? extends Annotation> annotationClass) throws URISyntaxException, ClassNotFoundException {
         String rootDirectoryPath = rootDirectoryName.replace('.', '/');
         URL rootDirectoryURL = ClassLoader.getSystemClassLoader().getResource(rootDirectoryPath);
         File rootDirectory = new File(Objects.requireNonNull(rootDirectoryURL).toURI());
 
-        searchFiles(componentFiles, rootDirectory, rootDirectoryName, Component.class);
+        searchFiles(componentFiles, rootDirectory, rootDirectoryName, annotationClass);
     }
 
     static Class<?> getConfigurations(String rootDirectoryName) throws URISyntaxException, ClassNotFoundException, ConfigurationsException {

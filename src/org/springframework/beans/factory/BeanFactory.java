@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class BeanFactory {
     private final Map<String, Object> singletons = new HashMap<>();
     private final Map<Class<?>, String> beanNameByType = new HashMap<>();
-    private final List<BeanPostProcessor> postProcessors = new ArrayList<>()
+    private final List<BeanPostProcessor> postProcessors = new ArrayList<>();
     private final List<Thread> schedule = new ArrayList<>();
     private String basePackage;
     private String propertiesSourcePath = "application.properties";
