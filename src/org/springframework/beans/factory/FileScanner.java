@@ -27,8 +27,9 @@ public class FileScanner {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, SpringTest.class);
 
-        if (componentFiles.size() != 1)
+        if (componentFiles.size() > 1)
             throw new SpringTestFileException();
+        if (componentFiles.isEmpty()) return null;
 
         return componentFiles.get(0);
     }
@@ -37,8 +38,9 @@ public class FileScanner {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, TestConfiguration.class);
 
-        if (componentFiles.size() != 1)
+        if (componentFiles.size() > 1)
             throw new TestConfigurationFileException();
+        if (componentFiles.isEmpty()) return null;
 
         return componentFiles.get(0);
     }
