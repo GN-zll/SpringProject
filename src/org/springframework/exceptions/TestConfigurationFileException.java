@@ -1,4 +1,4 @@
-package org.springframework.beans.factory.annotation;
+package org.springframework.exceptions;
 
 public class TestConfigurationFileException extends Exception {
     public TestConfigurationFileException() {

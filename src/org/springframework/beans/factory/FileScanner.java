@@ -3,10 +3,10 @@ package org.springframework.beans.factory;
 import org.springframework.beans.factory.annotation.Configuration;
 import org.springframework.beans.factory.annotation.SpringTest;
 import org.springframework.beans.factory.annotation.TestConfiguration;
-import org.springframework.beans.factory.annotation.TestConfigurationFileException;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.exceptions.ConfigurationsException;
 import org.springframework.exceptions.SpringTestFileException;
+import org.springframework.exceptions.TestConfigurationFileException;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
