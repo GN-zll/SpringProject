@@ -1,6 +1,6 @@
 package org.springframework.exceptions;
 
-public class PropertyFormatException extends Exception{
+public class PropertyFormatException extends PropertyException{
     public PropertyFormatException () {
         super("Incorrect property format in Properties Source file");
     }

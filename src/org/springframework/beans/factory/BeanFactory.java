@@ -134,7 +134,7 @@ public class BeanFactory {
     }
 
     public void testInstantiate(Class<?> testClass, String basePackage)
-            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, TestConfigurationFileException {
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, SpringTestConfigurationException {
         try {
             Class<?> configuration = FileScanner.getTestConfiguration(basePackage);
             if (configuration == null) {

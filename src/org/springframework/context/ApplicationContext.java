@@ -5,7 +5,6 @@ import org.springframework.beans.factory.FileScanner;
 import org.springframework.exceptions.*;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -14,7 +13,7 @@ public class ApplicationContext {
     private final BeanFactory beanFactory = new BeanFactory();
 
     public ApplicationContext(String basePackage)
-            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, IncorrectClassPropertyException, PropertyNotFoundException, PropertiesSourceException, IOException, PropertyFormatException, SpringTestFileException, TestConfigurationFileException {
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, IncorrectClassPropertyException, PropertyNotFoundException, PropertiesSourceException, IOException, PropertyFormatException, SpringTestFileException, SpringTestConfigurationException {
         if (!testApplicationRun(basePackage)) {
             beanFactory.instantiate(basePackage);
         }
@@ -35,7 +34,7 @@ public class ApplicationContext {
         beanFactory.startScheduleThread();
     }
 
-    private boolean testApplicationRun(String basePackage) throws SpringTestFileException, URISyntaxException, ReflectiveOperationException, ConfigurationsException, ScheduledMethodException, BeanException, TestConfigurationFileException {
+    private boolean testApplicationRun(String basePackage) throws SpringTestFileException, URISyntaxException, ReflectiveOperationException, ConfigurationsException, ScheduledMethodException, BeanException, SpringTestConfigurationException {
         Class<?> testClass = FileScanner.getSpringTestFile(basePackage);
         if (testClass == null) {
             return false;
