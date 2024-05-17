@@ -27,9 +27,12 @@ public class FileScanner {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, SpringTest.class);
 
-        if (componentFiles.size() > 1)
+        if (componentFiles.size() > 1) {
             throw new SpringTestFileException();
-        if (componentFiles.isEmpty()) return null;
+        }
+        if (componentFiles.isEmpty()) {
+            return null;
+        }
 
         return componentFiles.get(0);
     }
@@ -38,9 +41,12 @@ public class FileScanner {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, TestConfiguration.class);
 
-        if (componentFiles.size() > 1)
+        if (componentFiles.size() > 1) {
             throw new TestConfigurationFileException();
-        if (componentFiles.isEmpty()) return null;
+        }
+        if (componentFiles.isEmpty()) {
+            return null;
+        }
 
         return componentFiles.get(0);
     }
@@ -62,8 +68,12 @@ public class FileScanner {
         try {
             searchFiles(configurationsFiles, rootDirectory, rootDirectoryName, Configuration.class);
 
-            if (configurationsFiles.isEmpty()) throw new ClassNotFoundException();
-            if (configurationsFiles.size() > 1) throw new ConfigurationsException();
+            if (configurationsFiles.isEmpty()) {
+                throw new ClassNotFoundException();
+            }
+            if (configurationsFiles.size() > 1) {
+                throw new ConfigurationsException();
+            }
 
             System.out.println("conf " + configurationsFiles.get(0).toString());
             return configurationsFiles.get(0);
