@@ -13,7 +13,7 @@ public class ApplicationContext {
     private final BeanFactory beanFactory = new BeanFactory();
 
     public ApplicationContext(String basePackage)
-            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, IncorrectClassPropertyException, PropertyNotFoundException, PropertiesSourceException, IOException, PropertyFormatException, SpringTestFileException, SpringTestConfigurationException {
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, PropertyException, IOException, SpringTestException {
         if (!testApplicationRun(basePackage)) {
             beanFactory.instantiate(basePackage);
         }
@@ -25,7 +25,7 @@ public class ApplicationContext {
     }
 
     public ApplicationContext(Class<?> configuration)
-            throws ReflectiveOperationException, URISyntaxException, BeanException, ScheduledMethodException, IncorrectClassPropertyException, PropertyNotFoundException, PropertiesSourceException, IOException, PropertyFormatException {
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ScheduledMethodException, IOException, PropertyException {
         beanFactory.instantiate(configuration);
         beanFactory.populateBeans();
         beanFactory.populateProperties();
@@ -34,7 +34,7 @@ public class ApplicationContext {
         beanFactory.startScheduleThread();
     }
 
-    private boolean testApplicationRun(String basePackage) throws SpringTestFileException, URISyntaxException, ReflectiveOperationException, ConfigurationsException, ScheduledMethodException, BeanException, SpringTestConfigurationException {
+    private boolean testApplicationRun(String basePackage) throws URISyntaxException, ReflectiveOperationException, ConfigurationsException, ScheduledMethodException, BeanException, SpringTestException {
         Class<?> testClass = FileScanner.getSpringTestFile(basePackage);
         if (testClass == null) {
             return false;

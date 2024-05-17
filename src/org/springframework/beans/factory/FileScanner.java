@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.SpringTest;
 import org.springframework.beans.factory.annotation.TestConfiguration;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.exceptions.ConfigurationsException;
-import org.springframework.exceptions.SpringTestFileException;
 import org.springframework.exceptions.SpringTestConfigurationException;
+import org.springframework.exceptions.SpringTestException;
+import org.springframework.exceptions.SpringTestFileException;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -23,7 +24,7 @@ public class FileScanner {
         return componentFiles;
     }
 
-    public static Class<?> getSpringTestFile(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestFileException {
+    public static Class<?> getSpringTestFile(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestException {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, SpringTest.class);
 
@@ -37,7 +38,7 @@ public class FileScanner {
         return componentFiles.get(0);
     }
 
-    public static Class<?> getTestConfiguration(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestConfigurationException {
+    public static Class<?> getTestConfiguration(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestException {
         ArrayList<Class<?>> componentFiles = new ArrayList<>();
         instantiate(componentFiles, basePackage, TestConfiguration.class);
 

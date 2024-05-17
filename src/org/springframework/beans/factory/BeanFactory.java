@@ -134,7 +134,7 @@ public class BeanFactory {
     }
 
     public void testInstantiate(Class<?> testClass, String basePackage)
-            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, SpringTestConfigurationException {
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, SpringTestException {
         try {
             Class<?> configuration = FileScanner.getTestConfiguration(basePackage);
             if (configuration == null) {
@@ -214,7 +214,7 @@ public class BeanFactory {
         }
     }
 
-    public void populateProperties() throws PropertiesSourceException, IOException, PropertyFormatException, PropertyNotFoundException, IllegalAccessException, IncorrectClassPropertyException {
+    public void populateProperties() throws PropertyException, IOException, IllegalAccessException {
         for (Object object : singletons.values()) {
             for (Field field : object.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Value.class)) {
