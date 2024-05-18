@@ -93,6 +93,7 @@ public class FileScanner {
                 searchFiles(foundFiles, childFileAbsolutePath, rootDirectoryName, annotationClass);
             } else {
                 String childClassName = childFileAbsolutePath.substring(childFileAbsolutePath.indexOf(rootDirectoryName), childFileAbsolutePath.lastIndexOf('.')).replace('/', '.');
+                System.out.println(childClassName);
                 Class<?> childClassObject = Class.forName(childClassName);
 
                 if (childClassObject.isAnnotationPresent(annotationClass)) {

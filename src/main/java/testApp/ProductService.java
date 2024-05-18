@@ -8,7 +8,7 @@ import org.springframework.beans.factory.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class ProductService {
+public class ProductService implements Service {
 
     @Autowired
     private PromotionsService promotionsService;
@@ -31,4 +31,8 @@ public class ProductService {
         System.out.println("Hello");
     }
 
+    @Override
+    public void introduce() {
+        System.out.println("this is a ProductService object");
+    }
 }

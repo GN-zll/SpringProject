@@ -303,5 +303,9 @@ public class BeanFactory {
 
         //schedule.forEach(Thread::stop);
     }
+
+    public Map<String, Object> getSingletons() {
+        return singletons;
+    }
 }
 

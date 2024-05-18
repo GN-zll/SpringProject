@@ -3,7 +3,7 @@ package testApp;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.annotation.Value;
 
-public class PromotionsService implements BeanNameAware {
+public class PromotionsService implements BeanNameAware, Service {
     @Value(property = "${promotions.service.id}")
     private String id;
 
@@ -24,5 +24,10 @@ public class PromotionsService implements BeanNameAware {
     @Override
     public void setBeanName(String name) {
         beanName = name;
+    }
+
+    @Override
+    public void introduce() {
+        System.out.println("this is a PromotionService object");
     }
 }

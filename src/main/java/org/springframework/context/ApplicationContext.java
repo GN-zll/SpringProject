@@ -7,6 +7,7 @@ import org.springframework.exceptions.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 public class ApplicationContext {
 
@@ -52,5 +53,9 @@ public class ApplicationContext {
 
     public void close() {
         beanFactory.close();
+    }
+
+    public Map<String, Object> getBeanFactorySingletons () {
+        return beanFactory.getSingletons();
     }
 }

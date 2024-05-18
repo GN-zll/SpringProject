@@ -1,5 +1,6 @@
 package testApp;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.exceptions.*;
 
@@ -15,6 +16,9 @@ public class App {
         ProductService productService = (ProductService) applicationContext.getBeanFactory().getBean("testApp.ProductService");
         Thread.sleep(5000);
         System.out.println("close");
+        //
+        applicationContext.getBeanFactorySingletons();
+        //
         applicationContext.close();
     }
 }
