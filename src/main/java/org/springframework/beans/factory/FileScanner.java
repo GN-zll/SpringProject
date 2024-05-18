@@ -1,11 +1,17 @@
 package org.springframework.beans.factory;
 
 import org.springframework.beans.factory.annotation.Configuration;
+import org.springframework.beans.factory.annotation.SpringTest;
+import org.springframework.beans.factory.annotation.TestConfiguration;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.exceptions.ConfigurationsException;
+import org.springframework.exceptions.SpringTestException;
+import org.springframework.exceptions.SpringTestFileException;
+import org.springframework.exceptions.SpringTestConfigurationException;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +21,43 @@ public class FileScanner {
 
         // basePackageAbsolutePath example
         //basePackageAbsolutePath = "/home/egor/work/programming_technologies/project-6/src/main/java/testApp";
-        instantiate(componentFiles, basePackageAbsolutePath);
+        instantiate(componentFiles, basePackageAbsolutePath, Component.class);
 
         return componentFiles;
     }
 
-    private static void instantiate(List<Class<?>> componentFiles, String rootDirectoryAbsolutePath) throws ClassNotFoundException {
+    public static Class<?> getSpringTestFile(String basePackage) throws URISyntaxException, ClassNotFoundException, SpringTestException {
+        ArrayList<Class<?>> componentFiles = new ArrayList<>();
+        instantiate(componentFiles, basePackage, SpringTest.class);
+
+        if (componentFiles.size() > 1) {
+            throw new SpringTestFileException();
+        }
+        if (componentFiles.isEmpty()) {
+            return null;
+        }
+
+        return componentFiles.get(0);
+    }
+
+    public static Class<?> getTestConfiguration(String basePackage) throws ClassNotFoundException, SpringTestException {
+        ArrayList<Class<?>> componentFiles = new ArrayList<>();
+        instantiate(componentFiles, basePackage, TestConfiguration.class);
+
+        if (componentFiles.size() > 1) {
+            throw new SpringTestConfigurationException();
+        }
+        if (componentFiles.isEmpty()) {
+            return null;
+        }
+
+        return componentFiles.get(0);
+    }
+
+    private static void instantiate(List<Class<?>> componentFiles, String rootDirectoryAbsolutePath, Class<? extends Annotation> annotationClass) throws ClassNotFoundException {
         String rootDirectoryName = rootDirectoryAbsolutePath.substring(rootDirectoryAbsolutePath.lastIndexOf('/') + 1);
 
-        searchFiles(componentFiles, rootDirectoryAbsolutePath, rootDirectoryName, Component.class);
+        searchFiles(componentFiles, rootDirectoryAbsolutePath, rootDirectoryName, annotationClass);
     }
 
     static Class<?> getConfigurations(String rootDirectoryAbsolutePath) throws ClassNotFoundException, ConfigurationsException {

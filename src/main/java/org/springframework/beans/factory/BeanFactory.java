@@ -27,6 +27,10 @@ public class BeanFactory {
         return singletons.get(beanName);
     }
 
+    public Object getBean(Class<?> beanType) {
+        return singletons.get(beanNameByType.get(beanType));
+    }
+
     private void addBean(Object bean) throws BeanException, ScheduledMethodException {
         if (beanNameByType.containsKey(bean.getClass())) {
             throw new BeanException();
@@ -92,6 +96,7 @@ public class BeanFactory {
 
     public void instantiate(String basePackage)
             throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException {
+        basePackage = basePackage;
         try {
             Class<?> configuration = FileScanner.getConfigurations(basePackage);
             for (var method : configuration.getMethods()) {
@@ -126,6 +131,31 @@ public class BeanFactory {
         if (configuration.isAnnotationPresent(PropertiesSource.class)) {
             propertiesSourcePath = configuration.getAnnotation(PropertiesSource.class).propertiesSourcePath();
         }
+    }
+
+    public void testInstantiate(Class<?> testClass, String basePackage)
+            throws ReflectiveOperationException, URISyntaxException, BeanException, ConfigurationsException, ScheduledMethodException, SpringTestException {
+        try {
+            Class<?> configuration = FileScanner.getTestConfiguration(basePackage);
+            if (configuration == null) {
+                configuration = FileScanner.getConfigurations(basePackage);
+            }
+            for (var method : configuration.getMethods()) {
+                if (method.isAnnotationPresent(Bean.class)) {
+                    method.setAccessible(true);
+                    addBean(method.invoke(configuration.newInstance()));
+                }
+            }
+            addBean(testClass);
+
+            if (testClass.isAnnotationPresent(TestPropertiesSource.class)) {
+                propertiesSourcePath = configuration.getAnnotation(TestPropertiesSource.class).propertiesSourcePath();
+            } else if (configuration.isAnnotationPresent(PropertiesSource.class)) {
+                propertiesSourcePath = configuration.getAnnotation(PropertiesSource.class).propertiesSourcePath();
+            }
+        } catch (ClassNotFoundException ignored) {
+        }
+        findComponent(basePackage);
     }
 
     public void findComponent(String basePackage)
@@ -183,7 +213,7 @@ public class BeanFactory {
         }
     }
 
-    public void populateProperties() throws PropertiesSourceException, IOException, PropertyFormatException, PropertyNotFoundException, IllegalAccessException, IncorrectClassPropertyException {
+    public void populateProperties() throws PropertyException, IOException, IllegalAccessException {
         for (Object object : singletons.values()) {
             for (Field field : object.getClass().getDeclaredFields()) {
                 if (field.isAnnotationPresent(Value.class)) {
@@ -203,7 +233,7 @@ public class BeanFactory {
 
                         List<String> propertiesLines = Files.readAllLines(propertiesSourceFile);
                         for (String line : propertiesLines) {
-                            if(line.isEmpty() || line.charAt(0) == '#') {
+                            if (line.isEmpty() || line.charAt(0) == '#') {
                                 continue;
                             }
 
